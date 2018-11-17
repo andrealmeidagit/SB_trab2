@@ -22,16 +22,19 @@ int main (){
     list<Token> tokenlist, labellist;
     list<Token>::iterator it, aux;
     char inp_filename[] = "arquivo.asm";       //defines input file name
-    char out_filename[] = "arquivo.s";       //defines input file name
+    //char out_filename[] = "arquivo.s";       //defines input file name
 
     scanner(inp_filename , tokenlist, labellist);     //creates tokenlist with educational assembly code
-
 
     #ifdef __DEBUG__
         print_list (tokenlist);
     #endif
 
-    translate(out_filename, tokenlist);     //creates NASM file based on tokenlist
+    translator(tokenlist, labellist);                     //uses parser structure to translate code
+
+    #ifdef __DEBUG__
+        print_list (tokenlist);
+    #endif
 
     return 0;
 }
