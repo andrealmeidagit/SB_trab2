@@ -4,6 +4,8 @@ SECTION TEXT
     INPUT		H
     LOAD		B
     MULT		H
+    copy asd,red
+    s_input sodjnso, 32
     IF TRIANGULO
     DIV		DOIS
     STORE		R

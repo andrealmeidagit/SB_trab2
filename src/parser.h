@@ -1,13 +1,7 @@
 #ifndef PARSER_H_
 #define PARSER_H_
 
-#include <cstdio>
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <list>
-#include <stdlib.h>
-#include "pre_processor.h"
+#include "scanner.h"
 
 using namespace std;
 

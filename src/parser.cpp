@@ -34,8 +34,8 @@ int parser (list <Token> & tokenlist, list <Token> & labellist){
 
 			default:
 				cerr << "Parser: unknowm token type (" << it->str << ")." << endl;
-				mark_sintax_error(tokenlist,it);
-				pre_error = 1;
+				//mark_sintax_error(tokenlist,it);
+				//pre_error = 1;
 				it->flag = -1;
 				it++;
 			break;
@@ -67,8 +67,8 @@ list<Token>::iterator parser_mnemonic(list <Token> & tokenlist, list<Token>::ite
 				if (it->type == TT_AMPERSAND_OPERATOR){		// ignores argument indicator.
 					it++;
 					if (it == tokenlist.end() || target_line != it->line_number){
-						mark_sintax_error(tokenlist,it);
-										pre_error = 1;
+						//mark_sintax_error(tokenlist,it);
+										//pre_error = 1;
 										it->flag = -1;
 						cerr << "Sintax Error @ Line " << target_line << " - missing argument." << endl;
 					}
@@ -83,8 +83,8 @@ list<Token>::iterator parser_mnemonic(list <Token> & tokenlist, list<Token>::ite
 									it++;
 									if (it != tokenlist.end() && target_line == it->line_number){	// check if too much arguments.
 										cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-										mark_sintax_error(tokenlist,it);
-										pre_error = 1;
+										//mark_sintax_error(tokenlist,it);
+										//pre_error = 1;
 										it->flag = -1;
 										do {		// get out of line.
 											it++;
@@ -92,8 +92,8 @@ list<Token>::iterator parser_mnemonic(list <Token> & tokenlist, list<Token>::ite
 									}
 								} else {
 									cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-									mark_sintax_error(tokenlist,it);
-									pre_error = 1;
+									//mark_sintax_error(tokenlist,it);
+									//pre_error = 1;
 									it->flag = -1;
 									do {		// get out of line.
 										it++;
@@ -101,14 +101,14 @@ list<Token>::iterator parser_mnemonic(list <Token> & tokenlist, list<Token>::ite
 								}
 							} else {
 								cerr << "Sintax Error @ Line " << target_line << " - missing argument." << endl;
-								mark_sintax_error(tokenlist,it);
-								pre_error = 1;
+								//mark_sintax_error(tokenlist,it);
+								//pre_error = 1;
 								it->flag = -1;
 							}
 						} else {
 							cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-							mark_sintax_error(tokenlist,it);
-							pre_error = 1;
+							//mark_sintax_error(tokenlist,it);
+							//pre_error = 1;
 							it->flag = -1;
 							do {		// get out of line.
 								it++;
@@ -117,8 +117,8 @@ list<Token>::iterator parser_mnemonic(list <Token> & tokenlist, list<Token>::ite
 					}
 				} else {
 					cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-					mark_sintax_error(tokenlist,it);
-					pre_error = 1;
+					//mark_sintax_error(tokenlist,it);
+					//pre_error = 1;
 					it->flag = -1;
 					do {		// get out of line.
 						it++;
@@ -126,8 +126,8 @@ list<Token>::iterator parser_mnemonic(list <Token> & tokenlist, list<Token>::ite
 				}
 			} else {
 				cerr << "Sintax Error @ Line " << target_line << " - missing argument." << endl;
-				mark_sintax_error(tokenlist,it);
-				pre_error = 1;
+				//mark_sintax_error(tokenlist,it);
+				//pre_error = 1;
 				it->flag = -1;
 			}
 		break;
@@ -140,8 +140,8 @@ list<Token>::iterator parser_mnemonic(list <Token> & tokenlist, list<Token>::ite
 				if (it->type == TT_AMPERSAND_OPERATOR){		// ignores argument indicator.
 					it++;
 					if (it == tokenlist.end() || target_line != it->line_number){
-						mark_sintax_error(tokenlist,it);
-										pre_error = 1;
+						//mark_sintax_error(tokenlist,it);
+										//pre_error = 1;
 										it->flag = -1;
 						cerr << "Sintax Error @ Line " << target_line << " - missing argument." << endl;
 					}
@@ -156,15 +156,15 @@ list<Token>::iterator parser_mnemonic(list <Token> & tokenlist, list<Token>::ite
 									it++;
 									if (it == tokenlist.end() || target_line != it->line_number){	// check if next argument exist.
 										cerr << "Sintax Error @ Line " << target_line << " - missing argument." << endl;
-										mark_sintax_error(tokenlist,it);
-										pre_error = 1;
+										//mark_sintax_error(tokenlist,it);
+										//pre_error = 1;
 										it->flag = -1;
 										break;		// get out of switch.
 									}
 								} else {
 									cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-									mark_sintax_error(tokenlist,it);
-									pre_error = 1;
+									//mark_sintax_error(tokenlist,it);
+									//pre_error = 1;
 									it->flag = -1;
 									do {		// get out of line.
 										it++;
@@ -173,23 +173,23 @@ list<Token>::iterator parser_mnemonic(list <Token> & tokenlist, list<Token>::ite
 								}
 							} else {
 								cerr << "Sintax Error @ Line " << target_line << " - missing argument." << endl;
-								mark_sintax_error(tokenlist,it);
-								pre_error = 1;
+								//mark_sintax_error(tokenlist,it);
+								//pre_error = 1;
 								it->flag = -1;
 								break;		// get out of switch.
 							}
 						}
 					} else {
 						cerr << "Sintax Error @ Line " << target_line << " - missing argument." << endl;
-						mark_sintax_error(tokenlist,it);
-						pre_error = 1;
+						//mark_sintax_error(tokenlist,it);
+						//pre_error = 1;
 						it->flag = -1;
 						break;		// get out of switch.
 					}
 				} else {
 					cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-					mark_sintax_error(tokenlist,it);
-					pre_error = 1;
+					//mark_sintax_error(tokenlist,it);
+					//pre_error = 1;
 					it->flag = -1;
 					do {		// get out of line.
 						it++;
@@ -202,15 +202,15 @@ list<Token>::iterator parser_mnemonic(list <Token> & tokenlist, list<Token>::ite
 					it++;
 					if (it == tokenlist.end() || target_line != it->line_number){	// check if next argument exist.
 						cerr << "Sintax Error @ Line " << target_line << " - missing argument." << endl;
-						mark_sintax_error(tokenlist,it);
-						pre_error = 1;
+						//mark_sintax_error(tokenlist,it);
+						//pre_error = 1;
 						it->flag = -1;
 						break;		// get out of switch.
 					}
 				} else {
 					cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-					mark_sintax_error(tokenlist,it);
-					pre_error = 1;
+					//mark_sintax_error(tokenlist,it);
+					//pre_error = 1;
 					it->flag = -1;
 					do {		// get out of line.
 						it++;
@@ -222,8 +222,8 @@ list<Token>::iterator parser_mnemonic(list <Token> & tokenlist, list<Token>::ite
 				if (it->type == TT_AMPERSAND_OPERATOR){		// ignores argument indicator.
 					it++;
 					if (it == tokenlist.end() || target_line != it->line_number){
-						mark_sintax_error(tokenlist,it);
-										pre_error = 1;
+						//mark_sintax_error(tokenlist,it);
+										//pre_error = 1;
 										it->flag = -1;
 						cerr << "Sintax Error @ Line " << target_line << " - missing argument." << endl;
 					}
@@ -238,8 +238,8 @@ list<Token>::iterator parser_mnemonic(list <Token> & tokenlist, list<Token>::ite
 									it++;
 									if (it != tokenlist.end() && target_line == it->line_number){	// check if too much arguments.
 										cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-										mark_sintax_error(tokenlist,it);
-										pre_error = 1;
+										//mark_sintax_error(tokenlist,it);
+										//pre_error = 1;
 										it->flag = -1;
 										do {		// get out of line.
 											it++;
@@ -247,8 +247,8 @@ list<Token>::iterator parser_mnemonic(list <Token> & tokenlist, list<Token>::ite
 									}
 								} else {
 									cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-									mark_sintax_error(tokenlist,it);
-									pre_error = 1;
+									//mark_sintax_error(tokenlist,it);
+									//pre_error = 1;
 									it->flag = -1;
 									do {		// get out of line.
 										it++;
@@ -256,14 +256,14 @@ list<Token>::iterator parser_mnemonic(list <Token> & tokenlist, list<Token>::ite
 								}
 							} else {
 								cerr << "Sintax Error @ Line " << target_line << " - missing argument." << endl;
-								mark_sintax_error(tokenlist,it);
-								pre_error = 1;
+								//mark_sintax_error(tokenlist,it);
+								//pre_error = 1;
 								it->flag = -1;
 							}
 						} else {
 							cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-							mark_sintax_error(tokenlist,it);
-							pre_error = 1;
+							//mark_sintax_error(tokenlist,it);
+							//pre_error = 1;
 							it->flag = -1;
 							do {		// get out of line.
 								it++;
@@ -272,8 +272,8 @@ list<Token>::iterator parser_mnemonic(list <Token> & tokenlist, list<Token>::ite
 					}
 				} else {
 					cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-					mark_sintax_error(tokenlist,it);
-					pre_error = 1;
+					//mark_sintax_error(tokenlist,it);
+					//pre_error = 1;
 					it->flag = -1;
 					do {		// get out of line.
 						it++;
@@ -282,8 +282,8 @@ list<Token>::iterator parser_mnemonic(list <Token> & tokenlist, list<Token>::ite
 
 			} else {
 				cerr << "Sintax Error @ Line " << target_line << " - missing argument." << endl;
-				mark_sintax_error(tokenlist,it);
-				pre_error = 1;
+				//mark_sintax_error(tokenlist,it);
+				//pre_error = 1;
 				it->flag = -1;
 			}
 		break;
@@ -292,8 +292,8 @@ list<Token>::iterator parser_mnemonic(list <Token> & tokenlist, list<Token>::ite
 			it++;
 			if (it != tokenlist.end() && target_line == it->line_number){		// check if argument exist.
 				cerr << "Sintax Error @ Line " << target_line << " - unexpected argument." << endl;
-				mark_sintax_error(tokenlist,it);
-				pre_error = 1;
+				//mark_sintax_error(tokenlist,it);
+				//pre_error = 1;
 				it->flag = -1;
 				do {		// get out of line.
 					it++;
@@ -303,8 +303,8 @@ list<Token>::iterator parser_mnemonic(list <Token> & tokenlist, list<Token>::ite
 
 		default:
 			cerr << "Parser: unknowm mnemonic token (" << it->str << ")." << endl;
-			mark_sintax_error(tokenlist,it);
-			pre_error = 1;
+			//mark_sintax_error(tokenlist,it);
+			//pre_error = 1;
 			it->flag = -1;
 			it++;
 		break;
@@ -325,8 +325,8 @@ list<Token>::iterator parser_directive(list <Token> & tokenlist, list<Token>::it
 					it++;
 					if (it != tokenlist.end() && target_line == it->line_number){								// check if too much arguments.
 						cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-						mark_sintax_error(tokenlist,it);
-						pre_error = 1;
+						//mark_sintax_error(tokenlist,it);
+						//pre_error = 1;
 						it->flag = -1;
 						do {		// get out of line.
 							it++;
@@ -334,8 +334,8 @@ list<Token>::iterator parser_directive(list <Token> & tokenlist, list<Token>::it
 					}
 				} else {
 					cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-					mark_sintax_error(tokenlist,it);
-					pre_error = 1;
+					//mark_sintax_error(tokenlist,it);
+					//pre_error = 1;
 					it->flag = -1;
 					do {		// get out of line.
 						it++;
@@ -343,8 +343,8 @@ list<Token>::iterator parser_directive(list <Token> & tokenlist, list<Token>::it
 				}
 			} else {
 				cerr << "Sintax Error @ Line " << target_line << " - missing argument." << endl;
-				mark_sintax_error(tokenlist,it);
-				pre_error = 1;
+				//mark_sintax_error(tokenlist,it);
+				//pre_error = 1;
 				it->flag = -1;
 			}
 		break;
@@ -356,8 +356,8 @@ list<Token>::iterator parser_directive(list <Token> & tokenlist, list<Token>::it
 					it++;
 					if (it != tokenlist.end() && target_line == it->line_number){	// check if too much arguments.
 						cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-						mark_sintax_error(tokenlist,it);
-						pre_error = 1;
+						//mark_sintax_error(tokenlist,it);
+						//pre_error = 1;
 						it->flag = -1;
 						do {		// get out of line.
 							it++;
@@ -365,8 +365,8 @@ list<Token>::iterator parser_directive(list <Token> & tokenlist, list<Token>::it
 					}
 				} else {
 					cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-					mark_sintax_error(tokenlist,it);
-					pre_error = 1;
+					//mark_sintax_error(tokenlist,it);
+					//pre_error = 1;
 					it->flag = -1;
 					do {		// get out of line.
 						it++;
@@ -382,8 +382,8 @@ list<Token>::iterator parser_directive(list <Token> & tokenlist, list<Token>::it
 					it++;
 					if (it != tokenlist.end() && target_line == it->line_number){	// check if too much arguments.
 						cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-						mark_sintax_error(tokenlist,it);
-						pre_error = 1;
+						//mark_sintax_error(tokenlist,it);
+						//pre_error = 1;
 						it->flag = -1;
 						do {		// get out of line.
 							it++;
@@ -391,8 +391,8 @@ list<Token>::iterator parser_directive(list <Token> & tokenlist, list<Token>::it
 					}
 				} else {
 					cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-					mark_sintax_error(tokenlist,it);
-					pre_error = 1;
+					//mark_sintax_error(tokenlist,it);
+					//pre_error = 1;
 					it->flag = -1;
 					do {		// get out of line.
 						it++;
@@ -400,8 +400,8 @@ list<Token>::iterator parser_directive(list <Token> & tokenlist, list<Token>::it
 				}
 			} else {
 				cerr << "Sintax Error @ Line " << target_line << " - missing argument." << endl;
-				mark_sintax_error(tokenlist,it);
-				pre_error = 1;
+				//mark_sintax_error(tokenlist,it);
+				//pre_error = 1;
 				it->flag = -1;
 			}
 		break;
@@ -412,8 +412,8 @@ list<Token>::iterator parser_directive(list <Token> & tokenlist, list<Token>::it
 				if (it->type == TT_AMPERSAND_OPERATOR){		// ignores argument indicator.
 					it++;
 					if (it == tokenlist.end() || target_line != it->line_number){
-						mark_sintax_error(tokenlist,it);
-										pre_error = 1;
+						//mark_sintax_error(tokenlist,it);
+										//pre_error = 1;
 										it->flag = -1;
 						cerr << "Sintax Error @ Line " << target_line << " - missing argument." << endl;
 					}
@@ -422,8 +422,8 @@ list<Token>::iterator parser_directive(list <Token> & tokenlist, list<Token>::it
 					it++;
 					if (it != tokenlist.end() && target_line == it->line_number){	// check if too much arguments.
 						cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-						mark_sintax_error(tokenlist,it);
-						pre_error = 1;
+						//mark_sintax_error(tokenlist,it);
+						//pre_error = 1;
 						it->flag = -1;
 						do {		// get out of line.
 							it++;
@@ -431,8 +431,8 @@ list<Token>::iterator parser_directive(list <Token> & tokenlist, list<Token>::it
 					}
 				} else {
 					cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-					mark_sintax_error(tokenlist,it);
-					pre_error = 1;
+					//mark_sintax_error(tokenlist,it);
+					//pre_error = 1;
 					it->flag = -1;
 					do {		// get out of line.
 						it++;
@@ -440,8 +440,8 @@ list<Token>::iterator parser_directive(list <Token> & tokenlist, list<Token>::it
 				}
 			} else {
 				cerr << "Sintax Error @ Line " << target_line << " - missing argument." << endl;
-				mark_sintax_error(tokenlist,it);
-				pre_error = 1;
+				//mark_sintax_error(tokenlist,it);
+				//pre_error = 1;
 				it->flag = -1;
 			}
 		break;
@@ -456,8 +456,8 @@ list<Token>::iterator parser_directive(list <Token> & tokenlist, list<Token>::it
 						if (it->type == TT_OPERAND){								// check if argument is valid.
 							it++;
 						} else {
-							mark_sintax_error(tokenlist,it);
-										pre_error = 1;
+							//mark_sintax_error(tokenlist,it);
+										//pre_error = 1;
 										it->flag = -1;
 							cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
 							do {		// get out of line.
@@ -466,15 +466,15 @@ list<Token>::iterator parser_directive(list <Token> & tokenlist, list<Token>::it
 							break;
 						}
 					} else {
-						mark_sintax_error(tokenlist,it);
-										pre_error = 1;
+						//mark_sintax_error(tokenlist,it);
+										//pre_error = 1;
 										it->flag = -1;
 						cerr << "Sintax Error @ Line " << target_line << " - missing argument." << endl;
 						break;
 					}
 				} else {
-					mark_sintax_error(tokenlist,it);
-										pre_error = 1;
+					//mark_sintax_error(tokenlist,it);
+										//pre_error = 1;
 										it->flag = -1;
 					cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
 					do {		// get out of line.
@@ -491,15 +491,15 @@ list<Token>::iterator parser_directive(list <Token> & tokenlist, list<Token>::it
 				if (it->type == TT_COMMA_OPERATOR){								// check argument separator indicator.
 					it++;
 					if (it == tokenlist.end() || target_line != it->line_number){
-						mark_sintax_error(tokenlist,it);
-										pre_error = 1;
+						//mark_sintax_error(tokenlist,it);
+										//pre_error = 1;
 										it->flag = -1;
 						cerr << "Sintax Error @ Line " << target_line << " - missing argument." << endl;
 						break;
 					}
 				} else {
-					mark_sintax_error(tokenlist,it);
-										pre_error = 1;
+					//mark_sintax_error(tokenlist,it);
+										//pre_error = 1;
 										it->flag = -1;
 					cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
 					do {		// get out of line.
@@ -513,8 +513,8 @@ list<Token>::iterator parser_directive(list <Token> & tokenlist, list<Token>::it
 						if (it->type == TT_OPERAND){								// check if argument is valid.
 							it++;
 						} else {
-							mark_sintax_error(tokenlist,it);
-										pre_error = 1;
+							//mark_sintax_error(tokenlist,it);
+										//pre_error = 1;
 										it->flag = -1;
 							cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
 							do {		// get out of line.
@@ -523,15 +523,15 @@ list<Token>::iterator parser_directive(list <Token> & tokenlist, list<Token>::it
 							break;
 						}
 					} else {
-						mark_sintax_error(tokenlist,it);
-										pre_error = 1;
+						//mark_sintax_error(tokenlist,it);
+										//pre_error = 1;
 										it->flag = -1;
 						cerr << "Sintax Error @ Line " << target_line << " - missing argument." << endl;
 						break;
 					}
 				} else {
-					mark_sintax_error(tokenlist,it);
-										pre_error = 1;
+					//mark_sintax_error(tokenlist,it);
+										//pre_error = 1;
 										it->flag = -1;
 					cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
 					do {		// get out of line.
@@ -548,15 +548,15 @@ list<Token>::iterator parser_directive(list <Token> & tokenlist, list<Token>::it
 				if (it->type == TT_COMMA_OPERATOR){								// check argument separator indicator.
 					it++;
 					if (it == tokenlist.end() || target_line != it->line_number){
-						mark_sintax_error(tokenlist,it);
-										pre_error = 1;
+						//mark_sintax_error(tokenlist,it);
+										//pre_error = 1;
 										it->flag = -1;
 						cerr << "Sintax Error @ Line " << target_line << " - missing argument." << endl;
 						break;
 					}
 				} else {
-					mark_sintax_error(tokenlist,it);
-										pre_error = 1;
+					//mark_sintax_error(tokenlist,it);
+										//pre_error = 1;
 										it->flag = -1;
 					cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
 					do {		// get out of line.
@@ -570,8 +570,8 @@ list<Token>::iterator parser_directive(list <Token> & tokenlist, list<Token>::it
 						if (it->type == TT_OPERAND){								// check if argument is valid.
 							it++;
 						} else {
-							mark_sintax_error(tokenlist,it);
-										pre_error = 1;
+							//mark_sintax_error(tokenlist,it);
+										//pre_error = 1;
 										it->flag = -1;
 							cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
 							do {		// get out of line.
@@ -580,15 +580,15 @@ list<Token>::iterator parser_directive(list <Token> & tokenlist, list<Token>::it
 							break;
 						}
 					} else {
-						mark_sintax_error(tokenlist,it);
-										pre_error = 1;
+						//mark_sintax_error(tokenlist,it);
+										//pre_error = 1;
 										it->flag = -1;
 						cerr << "Sintax Error @ Line " << target_line << " - missing argument." << endl;
 						break;
 					}
 				} else {
-					mark_sintax_error(tokenlist,it);
-										pre_error = 1;
+					//mark_sintax_error(tokenlist,it);
+										//pre_error = 1;
 										it->flag = -1;
 					cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
 					do {		// get out of line.
@@ -605,15 +605,15 @@ list<Token>::iterator parser_directive(list <Token> & tokenlist, list<Token>::it
 				if (it->type == TT_COMMA_OPERATOR){								// check argument separator indicator.
 					it++;
 					if (it == tokenlist.end() || target_line != it->line_number){
-						mark_sintax_error(tokenlist,it);
-										pre_error = 1;
+						//mark_sintax_error(tokenlist,it);
+										//pre_error = 1;
 										it->flag = -1;
 						cerr << "Sintax Error @ Line " << target_line << " - missing argument." << endl;
 						break;
 					}
 				} else {
-					mark_sintax_error(tokenlist,it);
-										pre_error = 1;
+					//mark_sintax_error(tokenlist,it);
+										//pre_error = 1;
 										it->flag = -1;
 					cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
 					do {		// get out of line.
@@ -627,8 +627,8 @@ list<Token>::iterator parser_directive(list <Token> & tokenlist, list<Token>::it
 						if (it->type == TT_OPERAND){								// check if argument is valid.
 							it++;
 						} else {
-							mark_sintax_error(tokenlist,it);
-										pre_error = 1;
+							//mark_sintax_error(tokenlist,it);
+										//pre_error = 1;
 										it->flag = -1;
 							cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
 							do {		// get out of line.
@@ -637,15 +637,15 @@ list<Token>::iterator parser_directive(list <Token> & tokenlist, list<Token>::it
 							break;
 						}
 					} else {
-						mark_sintax_error(tokenlist,it);
-										pre_error = 1;
+						//mark_sintax_error(tokenlist,it);
+										//pre_error = 1;
 										it->flag = -1;
 						cerr << "Sintax Error @ Line " << target_line << " - missing argument." << endl;
 						break;
 					}
 				} else {
-					mark_sintax_error(tokenlist,it);
-										pre_error = 1;
+					//mark_sintax_error(tokenlist,it);
+										//pre_error = 1;
 										it->flag = -1;
 					cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
 					do {		// get out of line.
@@ -658,8 +658,8 @@ list<Token>::iterator parser_directive(list <Token> & tokenlist, list<Token>::it
 			}
 
 			if (it != tokenlist.end() && target_line == it->line_number){		// check if too much arguments.
-				mark_sintax_error(tokenlist,it);
-										pre_error = 1;
+				//mark_sintax_error(tokenlist,it);
+										//pre_error = 1;
 										it->flag = -1;
 				cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
 				do {		// get out of line.
@@ -671,8 +671,8 @@ list<Token>::iterator parser_directive(list <Token> & tokenlist, list<Token>::it
 		case DIR_ENDMACRO:
 			it++;
 			if (it != tokenlist.end() && target_line == it->line_number){		// check if argument exist.
-				mark_sintax_error(tokenlist,it);
-										pre_error = 1;
+				//mark_sintax_error(tokenlist,it);
+										//pre_error = 1;
 										it->flag = -1;
 				cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
 				do {		// get out of line.
@@ -685,8 +685,8 @@ list<Token>::iterator parser_directive(list <Token> & tokenlist, list<Token>::it
 		case DIR_DATA:
 		case DIR_BSS:
 			cerr << "Sintax Error @ Line " << target_line << " - invalid use of directive." << endl;
-			mark_sintax_error(tokenlist,it);
-			pre_error = 1;
+			//mark_sintax_error(tokenlist,it);
+			//pre_error = 1;
 			it->flag = -1;
 			do {		// get out of line.
 				it++;
@@ -708,8 +708,8 @@ list<Token>::iterator parser_directive(list <Token> & tokenlist, list<Token>::it
 
 				if (it != tokenlist.end() && target_line == it->line_number){		// check if argument exist.
 					cerr << "Sintax Error @ Line " << target_line << " - unexpected argument." << endl;
-					mark_sintax_error(tokenlist,it);
-					pre_error = 1;
+					//mark_sintax_error(tokenlist,it);
+					//pre_error = 1;
 					it->flag = -1;
 					do {		// get out of line.
 						it++;
@@ -719,8 +719,8 @@ list<Token>::iterator parser_directive(list <Token> & tokenlist, list<Token>::it
 				it++;
 
 				cerr << "Sintax Error @ Line " << target_line << " - invalid use of directive." << endl;
-				mark_sintax_error(tokenlist,it);
-				pre_error = 1;
+				//mark_sintax_error(tokenlist,it);
+				//pre_error = 1;
 				it->flag = -1;
 				do {		// get out of line.
 					it++;
@@ -733,8 +733,8 @@ list<Token>::iterator parser_directive(list <Token> & tokenlist, list<Token>::it
 
 			if (it != tokenlist.end() && target_line == it->line_number){		// check if argument exist.
 				cerr << "Sintax Error @ Line " << target_line << " - unexpected argument." << endl;
-				mark_sintax_error(tokenlist,it);
-				pre_error = 1;
+				//mark_sintax_error(tokenlist,it);
+				//pre_error = 1;
 				it->flag = -1;
 				do {		// get out of line.
 					it++;
@@ -751,16 +751,16 @@ list<Token>::iterator parser_directive(list <Token> & tokenlist, list<Token>::it
 
 					if (it != tokenlist.end() && target_line == it->line_number){		// check if argument exist.
 						cerr << "Sintax Error @ Line " << target_line << " - unexpected argument." << endl;
-						mark_sintax_error(tokenlist,it);
-						pre_error = 1;
+						//mark_sintax_error(tokenlist,it);
+						//pre_error = 1;
 						it->flag = -1;
 						do {		// get out of line.
 							it++;
 						} while(it != tokenlist.end() && target_line == it->line_number);
 					}
 				} else {
-					mark_sintax_error(tokenlist,it);
-								pre_error = 1;
+					//mark_sintax_error(tokenlist,it);
+								//pre_error = 1;
 								it->flag = -1;
 					cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
 					do {		// get out of line.
@@ -769,8 +769,8 @@ list<Token>::iterator parser_directive(list <Token> & tokenlist, list<Token>::it
 					break;
 				}
 			} else {
-				mark_sintax_error(tokenlist,it);
-								pre_error = 1;
+				//mark_sintax_error(tokenlist,it);
+								//pre_error = 1;
 								it->flag = -1;
 				cerr << "Sintax Error @ Line " << target_line << " - missing argument." << endl;
 				break;
@@ -779,8 +779,8 @@ list<Token>::iterator parser_directive(list <Token> & tokenlist, list<Token>::it
 
 		default:
 			cerr << "Parser: unknowm directive token (" << it->str << ")." << endl;
-			mark_sintax_error(tokenlist,it);
-			pre_error = 1;
+			//mark_sintax_error(tokenlist,it);
+			//pre_error = 1;
 			it->flag = -1;
 			it++;
 		break;
@@ -807,8 +807,8 @@ list<Token>::iterator parser_operand(list <Token> & tokenlist, list<Token>::iter
 		if (it->type == TT_OPERAND){									// check if argument is valid.
 			it++;
 		} else {
-			mark_sintax_error(tokenlist,it);
-										pre_error = 1;
+			//mark_sintax_error(tokenlist,it);
+										//pre_error = 1;
 										it->flag = -1;
 			cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
 			do {		// get out of line.
@@ -835,8 +835,8 @@ list<Token>::iterator parser_operand(list <Token> & tokenlist, list<Token>::iter
 					it++;
 				} else {
 					cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-					mark_sintax_error(tokenlist,it);
-					pre_error = 1;
+					//mark_sintax_error(tokenlist,it);
+					//pre_error = 1;
 					it->flag = -1;
 					do {		// get out of line.
 						it++;
@@ -844,16 +844,16 @@ list<Token>::iterator parser_operand(list <Token> & tokenlist, list<Token>::iter
 					return it;
 				}
 			} else {
-				mark_sintax_error(tokenlist,it);
-										pre_error = 1;
+				//mark_sintax_error(tokenlist,it);
+										//pre_error = 1;
 										it->flag = -1;
 				cerr << "Sintax Error @ Line " << target_line << " - missing argument." << endl;
 				return it;
 			}
 		} else {
 			cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-			mark_sintax_error(tokenlist,it);
-			pre_error = 1;
+			//mark_sintax_error(tokenlist,it);
+			//pre_error = 1;
 			it->flag = -1;
 			do {		// get out of line.
 				it++;
@@ -878,8 +878,8 @@ list<Token>::iterator parser_operand(list <Token> & tokenlist, list<Token>::iter
 				if (it->type == TT_OPERAND){								// check if argument is valid.
 					it++;
 				} else {
-					mark_sintax_error(tokenlist,it);
-										pre_error = 1;
+					//mark_sintax_error(tokenlist,it);
+										//pre_error = 1;
 										it->flag = -1;
 					cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
 					do {		// get out of line.
@@ -888,15 +888,15 @@ list<Token>::iterator parser_operand(list <Token> & tokenlist, list<Token>::iter
 					return it;
 				}
 			} else {
-				mark_sintax_error(tokenlist,it);
-										pre_error = 1;
+				//mark_sintax_error(tokenlist,it);
+										//pre_error = 1;
 										it->flag = -1;
 				cerr << "Sintax Error @ Line " << target_line << " - missing argument." << endl;
 				return it;
 			}
 		} else {
-			mark_sintax_error(tokenlist,it);
-										pre_error = 1;
+			//mark_sintax_error(tokenlist,it);
+										//pre_error = 1;
 										it->flag = -1;
 			cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
 			do {		// get out of line.
@@ -922,8 +922,8 @@ list<Token>::iterator parser_operand(list <Token> & tokenlist, list<Token>::iter
 				if (it->type == TT_OPERAND){								// check if argument is valid.
 					it++;
 				} else {
-					mark_sintax_error(tokenlist,it);
-										pre_error = 1;
+					//mark_sintax_error(tokenlist,it);
+										//pre_error = 1;
 										it->flag = -1;
 					cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
 					do {		// get out of line.
@@ -932,15 +932,15 @@ list<Token>::iterator parser_operand(list <Token> & tokenlist, list<Token>::iter
 					return it;
 				}
 			} else {
-				mark_sintax_error(tokenlist,it);
-										pre_error = 1;
+				//mark_sintax_error(tokenlist,it);
+										//pre_error = 1;
 										it->flag = -1;
 				cerr << "Sintax Error @ Line " << target_line << " - missing argument." << endl;
 				return it;
 			}
 		} else {
-			mark_sintax_error(tokenlist,it);
-										pre_error = 1;
+			//mark_sintax_error(tokenlist,it);
+										//pre_error = 1;
 										it->flag = -1;
 			cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
 			do {		// get out of line.
@@ -953,8 +953,8 @@ list<Token>::iterator parser_operand(list <Token> & tokenlist, list<Token>::iter
 	}
 
 	if (it != tokenlist.end() && target_line == it->line_number){		// check if too much arguments.
-		mark_sintax_error(tokenlist,it);
-										pre_error = 1;
+		//mark_sintax_error(tokenlist,it);
+										//pre_error = 1;
 										it->flag = -1;
 		cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
 		do {		// get out of line.
@@ -969,8 +969,8 @@ list<Token>::iterator parser_const(list <Token> & tokenlist, list<Token>::iterat
 	target_line = it->line_number;
 
  cerr << "Sintax Error @ Line " << target_line << " - unexpected value." << endl;
- mark_sintax_error(tokenlist,it);
- pre_error = 1;
+ //mark_sintax_error(tokenlist,it);
+ //pre_error = 1;
  it->flag = -1;
 	do {		// get out of line.
 		it++;
@@ -985,8 +985,8 @@ list<Token>::iterator parser_ampersand(list <Token> & tokenlist, list<Token>::it
 
 	it++;
 	if (it == tokenlist.end() || target_line != it->line_number){
-		mark_sintax_error(tokenlist,it);
-										pre_error = 1;
+		//mark_sintax_error(tokenlist,it);
+										//pre_error = 1;
 										it->flag = -1;
 		cerr << "Sintax Error @ Line " << target_line << " - ." << endl;
 	}
@@ -1000,14 +1000,14 @@ list<Token>::iterator parser_label(list <Token> & tokenlist, list<Token>::iterat
 
 	it++;
 	if (it == tokenlist.end() || target_line != it->line_number){
-		mark_sintax_error(tokenlist,it);
-										pre_error = 1;
+		//mark_sintax_error(tokenlist,it);
+										//pre_error = 1;
 										it->flag = -1;
 		cerr << "Sintax Error @ Line " << target_line << " - empty label." << endl;
 	} else {
 		if (it->type == TT_LABEL){
-			mark_sintax_error(tokenlist,it);
-										pre_error = 1;
+			//mark_sintax_error(tokenlist,it);
+										//pre_error = 1;
 										it->flag = -1;
 			cerr << "Sintax Error @ Line " << target_line << " - multiple labels in line." << endl;
 			do {		// get out of line.

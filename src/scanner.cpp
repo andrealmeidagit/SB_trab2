@@ -1,5 +1,5 @@
 /*SCANNER:
-* This program analyses the code searching for lexical errorsand divides the
+* This program analyses the code searching for lexical errors and divides the
 *  text into tokens, organizing them in a token list.
 * Tokens have 5 elements: string (str), line number, position in line (pos_il),
 * type and additional information.
@@ -250,6 +250,26 @@ int is_mnemonic(Token & token){
         token.addit_info = OP_OUTPUT;
         return OP_OUTPUT;
     }else
+    if (token.str.compare("C_INPUT") == 0){
+        token.type = TT_MNEMONIC;
+        token.addit_info = OP_C_INPUT;
+        return OP_C_INPUT;
+    }else
+    if (token.str.compare("C_OUTPUT") == 0){
+        token.type = TT_MNEMONIC;
+        token.addit_info = OP_C_OUTPUT;
+        return OP_C_OUTPUT;
+    }else
+    if (token.str.compare("C_INPUT") == 0){
+        token.type = TT_MNEMONIC;
+        token.addit_info = OP_S_INPUT;
+        return OP_C_INPUT;
+    }else
+    if (token.str.compare("C_OUTPUT") == 0){
+        token.type = TT_MNEMONIC;
+        token.addit_info = OP_S_OUTPUT;
+        return OP_C_OUTPUT;
+    }else
     if (token.str.compare("STOP") == 0){
         token.type = TT_MNEMONIC;
         token.addit_info = OP_STOP;
@@ -297,6 +317,10 @@ int is_label(Token & token, list<Token> & labellist){
                 token.str.compare("STORE:") == 0 || \
                 token.str.compare("INPUT:") == 0 || \
                 token.str.compare("OUTPUT:") == 0 || \
+                token.str.compare("C_INPUT:") == 0 || \
+                token.str.compare("C_OUTPUT:") == 0 || \
+                token.str.compare("S_INPUT:") == 0 || \
+                token.str.compare("S_OUTPUT:") == 0 || \
                 token.str.compare("STOP:") == 0 || \
                 token.str.compare("SECTION:") == 0 || \
                 token.str.compare("TEXT:") == 0 || \
@@ -510,7 +534,7 @@ int is_operand(Token & token, list<Token> & tokenlist){
     unsigned int i;
 
     token.type = TT_OPERAND;
-    if (token.str.length() < 1 || token.str.length() > 20){     // Check length.
+    if (token.str.length() < 1 || token.str.length() > 50){     // Check length.
         cerr << "Lexical Error @ Line " << token.line_number << " - invalid operand length." << endl;
         error_found = 1;
         token.addit_info = INVALID_TOKEN;
