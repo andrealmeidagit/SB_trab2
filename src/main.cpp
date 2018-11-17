@@ -9,13 +9,8 @@ Alunos: Andre Abreu Rodrigues de Almeida    12/0007100
 */
 
 
-#include <cstdio>
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <cstring>
-#include <list>
 #include "scanner.h"
+#include "translator.h"
 using namespace std;
 
 #define __DEBUG__
@@ -26,13 +21,16 @@ int error_found;
 int main (){
     list<Token> tokenlist;
     list<Token>::iterator it, aux;
-    char s[] = "arquivo.asm";
+    char inp_filename[] = "arquivo.asm";       //defines input file name
+    char out_filename[] = "arquivo.s";       //defines input file name
 
-    identify_tokens(s , tokenlist);
+    identify_tokens(inp_filename , tokenlist);     //creates tokenlist with educational assembly code
 
     #ifdef __DEBUG__
         print_list (tokenlist);
     #endif
+
+    translate(out_filename, tokenlist);     //creates NASM file based on tokenlist
 
     return 0;
 }
