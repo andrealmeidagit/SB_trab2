@@ -19,12 +19,13 @@ int error_found;
 
 
 int main (){
-    list<Token> tokenlist;
+    list<Token> tokenlist, labellist;
     list<Token>::iterator it, aux;
     char inp_filename[] = "arquivo.asm";       //defines input file name
     char out_filename[] = "arquivo.s";       //defines input file name
 
-    identify_tokens(inp_filename , tokenlist);     //creates tokenlist with educational assembly code
+    scanner(inp_filename , tokenlist, labellist);     //creates tokenlist with educational assembly code
+
 
     #ifdef __DEBUG__
         print_list (tokenlist);
