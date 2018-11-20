@@ -4,8 +4,8 @@ SECTION TEXT
     INPUT		H
     LOAD		B
     MULT		H
-    copy asd,red
-    s_input sodjnso, 32
+    copy var1,var2
+    s_input string1, 32
     IF TRIANGULO
     DIV		DOIS
     STORE		R
