@@ -43,13 +43,13 @@ list<Token>::iterator transl_mnemonic(list<Token>::iterator it, char * s){
 	ofstream nasmfile( s );  //opens NASM file
 	switch (it->addit_info){
 		 case OP_ADD      :
-		 	nasmfile << "add";
+		 	nasmfile << "add eax, ";
 			it++;
 			nasmfile << it->str << endl;
 			it++;
 		 break;
 		 case OP_SUB      :
-			 nasmfile << "sub";
+			 nasmfile << "sub eax, ";
 			 it++;
 			 nasmfile << it->str << endl;
 			 it++;
