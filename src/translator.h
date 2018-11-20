@@ -5,13 +5,11 @@
 
 using namespace std;
 
-int translator(list <Token> & tokenlist, list <Token> & labellist);
-list<Token>::iterator translator_mnemonic(list <Token> & tokenlist, list<Token>::iterator it);
-list<Token>::iterator translator_directive(list <Token> & tokenlist, list<Token>::iterator it);
-list<Token>::iterator translator_operand(list <Token> & tokenlist, list<Token>::iterator it);
-list<Token>::iterator translator_const(list <Token> & tokenlist, list<Token>::iterator it);
-list<Token>::iterator translator_ampersand(list <Token> & tokenlist, list<Token>::iterator it);
-list<Token>::iterator translator_label(list <Token> & tokenlist, list<Token>::iterator it);
+int translator(list <Token> & tokenlist, char * s);
+
+list<Token>::iterator transl_mnemonic(list<Token>::iterator it, char * s);
+list<Token>::iterator transl_label(list<Token>::iterator it, char * s);
+list<Token>::iterator transl_directive(list<Token>::iterator it, char * s);
 
 extern int pre_error;
 

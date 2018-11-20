@@ -22,7 +22,7 @@ int main (){
     list<Token> tokenlist, labellist;
     list<Token>::iterator it, aux;
     char inp_filename[] = "arquivo.asm";       //defines input file name
-    //char out_filename[] = "arquivo.s";       //defines input file name
+    char out_filename[] = "arquivo.s";       //defines input file name
 
     scanner(inp_filename , tokenlist, labellist);     //creates tokenlist with educational assembly code
 
@@ -30,7 +30,7 @@ int main (){
         print_list (tokenlist);
     #endif
 
-    translator(tokenlist, labellist);                     //uses parser structure to translate code
+    translator(tokenlist, out_filename);                     //uses parser structure to translate code
 
     #ifdef __DEBUG__
         print_list (tokenlist);

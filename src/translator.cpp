@@ -1,1020 +1,192 @@
 #include "translator.h"
 
-int translator (list <Token> & tokenlist, list <Token> & labellist){
+int translator (list <Token> & tokenlist, char * s){
 	list<Token>::iterator it;
 
-	it = tokenlist.begin();
-	while (it != tokenlist.end()){		// Check key tokens.
+ofstream nasmfile( s );  //opens NASM file in write mode
+
+	for (it = tokenlist.begin();it != tokenlist.end(); it++){	//scans whole file
+
+		ofstream nasmfile( s );  //opens NASM file
+		nasmfile << "global      _start\n_start:\n";
+		nasmfile.close();
+
 		switch (it->type){
-			case TT_MNEMONIC:
-				it = translator_mnemonic(tokenlist, it);
+			case TT_MNEMONIC:		//check OPCODE table
+				it = transl_mnemonic(it, s);
 			break;
 
 			case TT_LABEL:
-				it = translator_label(tokenlist, it);
+				it = transl_label(it, s);
 			break;
 
 			case TT_DIRECTIVE:
-				it = translator_directive(tokenlist, it);
+				it = transl_directive(it, s);
 			break;
-
-			case TT_OPERAND:
-				it = translator_operand(tokenlist, it);
+			case TT_OPERAND          	:
+			case TT_CONST        		:
+			case TT_COMMA_OPERATOR   	:
+			case TT_PLUS_OPERATOR		:
+			case TT_AMPERSAND_OPERATOR 	:
+				it++;
 			break;
-
-			case TT_COMMA_OPERATOR:
-			case TT_PLUS_OPERATOR:
-			case TT_CONST:
-				it = translator_const(tokenlist, it);
-			break;
-
-			case TT_AMPERSAND_OPERATOR:
-				it = translator_ampersand(tokenlist, it);
-			break;
-
 			default:
-				cerr << "translator: unknowm token type (" << it->str << ")." << endl;
-				//mark_sintax_error(tokenlist,it);
-				//pre_error = 1;
-				it->flag = -1;
+				cerr << "Parser: unknowm token type (" << it->str << ")." << endl;
 				it++;
 			break;
 		}
 	}
-
 	return 0;
 }
 
-list<Token>::iterator translator_mnemonic(list <Token> & tokenlist, list<Token>::iterator it){
-	int target_line;
-
-	target_line = it->line_number;
+list<Token>::iterator transl_mnemonic(list<Token>::iterator it, char * s){
+	ofstream nasmfile( s );  //opens NASM file
 	switch (it->addit_info){
-		case OP_ADD:
-		case OP_SUB:
-		case OP_MULT:
-		case OP_DIV:
-		case OP_JMP:
-		case OP_JMPN:
-		case OP_JMPP:
-		case OP_JMPZ:
-		case OP_LOAD:
-		case OP_STORE:
-		case OP_INPUT:
-		case OP_OUTPUT:
+		 case OP_ADD      :
+		 	nasmfile << "add";
 			it++;
-			if (it != tokenlist.end() && target_line == it->line_number){			// check if argument exists.
-				if (it->type == TT_AMPERSAND_OPERATOR){		// ignores argument indicator.
-					it++;
-					if (it == tokenlist.end() || target_line != it->line_number){
-						//mark_sintax_error(tokenlist,it);
-										//pre_error = 1;
-										it->flag = -1;
-						cerr << "Sintax Error @ Line " << target_line << " - missing argument." << endl;
-					}
-				}
-				if (it->type == TT_OPERAND){										// check if valid argument.
-					it++;
-					if (it != tokenlist.end() && target_line == it->line_number){	// check extra operation.
-						if (it->type == TT_PLUS_OPERATOR){											// check if valid operation +.
-							it++;
-							if (it != tokenlist.end() && target_line == it->line_number){			// check if + argument exist.
-								if (it->type == TT_CONST){											// check if + valid argument.
-									it++;
-									if (it != tokenlist.end() && target_line == it->line_number){	// check if too much arguments.
-										cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-										//mark_sintax_error(tokenlist,it);
-										//pre_error = 1;
-										it->flag = -1;
-										do {		// get out of line.
-											it++;
-										} while(it != tokenlist.end() && target_line == it->line_number);
-									}
-								} else {
-									cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-									//mark_sintax_error(tokenlist,it);
-									//pre_error = 1;
-									it->flag = -1;
-									do {		// get out of line.
-										it++;
-									} while(it != tokenlist.end() && target_line == it->line_number);
-								}
-							} else {
-								cerr << "Sintax Error @ Line " << target_line << " - missing argument." << endl;
-								//mark_sintax_error(tokenlist,it);
-								//pre_error = 1;
-								it->flag = -1;
-							}
-						} else {
-							cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-							//mark_sintax_error(tokenlist,it);
-							//pre_error = 1;
-							it->flag = -1;
-							do {		// get out of line.
-								it++;
-							} while(it != tokenlist.end() && target_line == it->line_number);
-						}
-					}
-				} else {
-					cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-					//mark_sintax_error(tokenlist,it);
-					//pre_error = 1;
-					it->flag = -1;
-					do {		// get out of line.
-						it++;
-					} while(it != tokenlist.end() && target_line == it->line_number);
-				}
-			} else {
-				cerr << "Sintax Error @ Line " << target_line << " - missing argument." << endl;
-				//mark_sintax_error(tokenlist,it);
-				//pre_error = 1;
-				it->flag = -1;
-			}
+			nasmfile << it->str << endl;
+			it++;
+		 break;
+		 case OP_SUB      :
+			 nasmfile << "sub";
+			 it++;
+			 nasmfile << it->str << endl;
+			 it++;
+		 break;
+		 case OP_MULT     :
+
+		 break;
+		 case OP_DIV      :
+
+		 break;
+		 case OP_JMP      :
+
+		 break;
+		 case OP_JMPN     :
+
+		 break;
+		 case OP_JMPP     :
+
+		 break;
+		 case OP_JMPZ     :
+
+		 break;
+		 case OP_COPY     :
+
+		 break;
+		 case OP_LOAD     :
+
+
+		 break;
+		 case OP_STORE    :
+
+
+		 break;
+		 case OP_INPUT    :
+
+
+		 break;
+		 case OP_OUTPUT   :
+
+
+		 break;
+		 case OP_C_INPUT  :
+
+
+		 break;
+		 case OP_C_OUTPUT :
+
+
+		 break;
+		 case OP_S_INPUT  :
+
+
+		 break;
+		 case OP_S_OUTPUT :
+
+
+		 break;
+		 case OP_STOP     :
+
+
+		 break;
+		 case OP_BASIC_OP :      //"+, -, /, *, %"
+
+		 break;
+
+		 default:
+			 cerr << "Parser: unknowm token type (" << it->str << ")." << endl;
+			 it++;
+		 break;
+	}
+	nasmfile.close();
+	return it;
+}
+
+list<Token>::iterator transl_label(list<Token>::iterator it, char * s){
+	ofstream nasmfile( s );  //opens NASM file
+	nasmfile << it->str << " ";
+	it ++;
+	nasmfile.close();
+	return it;
+}
+
+list<Token>::iterator transl_directive(list<Token>::iterator it, char * s){
+	ofstream nasmfile( s );  //opens NASM file
+	switch (it->addit_info){
+		case DIR_SECTION :
+			nasmfile << "section ";
+			it ++;
 		break;
+		case DIR_SPACE :
 
-		case OP_COPY:
-			it++;
-			if (it != tokenlist.end() && target_line == it->line_number){	// check if arguments exists.
-
-				// first argument.
-				if (it->type == TT_AMPERSAND_OPERATOR){		// ignores argument indicator.
-					it++;
-					if (it == tokenlist.end() || target_line != it->line_number){
-						//mark_sintax_error(tokenlist,it);
-										//pre_error = 1;
-										it->flag = -1;
-						cerr << "Sintax Error @ Line " << target_line << " - missing argument." << endl;
-					}
-				}
-				if (it->type == TT_OPERAND){										// check if valid argument.
-					it++;
-					if (it != tokenlist.end() && target_line == it->line_number){	// check if next argument exist.
-						if (it->type == TT_PLUS_OPERATOR){									// check if it is + operation.
-							it++;
-							if (it != tokenlist.end() && target_line == it->line_number){	// check if + argument exist.
-								if (it->type == TT_CONST){									// check if + valid argument.
-									it++;
-									if (it == tokenlist.end() || target_line != it->line_number){	// check if next argument exist.
-										cerr << "Sintax Error @ Line " << target_line << " - missing argument." << endl;
-										//mark_sintax_error(tokenlist,it);
-										//pre_error = 1;
-										it->flag = -1;
-										break;		// get out of switch.
-									}
-								} else {
-									cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-									//mark_sintax_error(tokenlist,it);
-									//pre_error = 1;
-									it->flag = -1;
-									do {		// get out of line.
-										it++;
-									} while(it != tokenlist.end() && target_line == it->line_number);
-									break;		// get out of switch.
-								}
-							} else {
-								cerr << "Sintax Error @ Line " << target_line << " - missing argument." << endl;
-								//mark_sintax_error(tokenlist,it);
-								//pre_error = 1;
-								it->flag = -1;
-								break;		// get out of switch.
-							}
-						}
-					} else {
-						cerr << "Sintax Error @ Line " << target_line << " - missing argument." << endl;
-						//mark_sintax_error(tokenlist,it);
-						//pre_error = 1;
-						it->flag = -1;
-						break;		// get out of switch.
-					}
-				} else {
-					cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-					//mark_sintax_error(tokenlist,it);
-					//pre_error = 1;
-					it->flag = -1;
-					do {		// get out of line.
-						it++;
-					} while(it != tokenlist.end() && target_line == it->line_number);
-					break;		// get out of switch.
-				}
-
-				// comma argument.
-				if (it->type == TT_COMMA_OPERATOR){									// check if valid argument.
-					it++;
-					if (it == tokenlist.end() || target_line != it->line_number){	// check if next argument exist.
-						cerr << "Sintax Error @ Line " << target_line << " - missing argument." << endl;
-						//mark_sintax_error(tokenlist,it);
-						//pre_error = 1;
-						it->flag = -1;
-						break;		// get out of switch.
-					}
-				} else {
-					cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-					//mark_sintax_error(tokenlist,it);
-					//pre_error = 1;
-					it->flag = -1;
-					do {		// get out of line.
-						it++;
-					} while(it != tokenlist.end() && target_line == it->line_number);
-					break;
-				}
-
-				// second argument.
-				if (it->type == TT_AMPERSAND_OPERATOR){		// ignores argument indicator.
-					it++;
-					if (it == tokenlist.end() || target_line != it->line_number){
-						//mark_sintax_error(tokenlist,it);
-										//pre_error = 1;
-										it->flag = -1;
-						cerr << "Sintax Error @ Line " << target_line << " - missing argument." << endl;
-					}
-				}
-				if (it->type == TT_OPERAND){										// check if valid argument.
-					it++;
-					if (it != tokenlist.end() && target_line == it->line_number){	// check extra operation.
-						if (it->type == TT_PLUS_OPERATOR){											// check if valid operation +.
-							it++;
-							if (it != tokenlist.end() && target_line == it->line_number){			// check if + argument exist.
-								if (it->type == TT_CONST){											// check if + valid argument.
-									it++;
-									if (it != tokenlist.end() && target_line == it->line_number){	// check if too much arguments.
-										cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-										//mark_sintax_error(tokenlist,it);
-										//pre_error = 1;
-										it->flag = -1;
-										do {		// get out of line.
-											it++;
-										} while(it != tokenlist.end() && target_line == it->line_number);
-									}
-								} else {
-									cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-									//mark_sintax_error(tokenlist,it);
-									//pre_error = 1;
-									it->flag = -1;
-									do {		// get out of line.
-										it++;
-									} while(it != tokenlist.end() && target_line == it->line_number);
-								}
-							} else {
-								cerr << "Sintax Error @ Line " << target_line << " - missing argument." << endl;
-								//mark_sintax_error(tokenlist,it);
-								//pre_error = 1;
-								it->flag = -1;
-							}
-						} else {
-							cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-							//mark_sintax_error(tokenlist,it);
-							//pre_error = 1;
-							it->flag = -1;
-							do {		// get out of line.
-								it++;
-							} while(it != tokenlist.end() && target_line == it->line_number);
-						}
-					}
-				} else {
-					cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-					//mark_sintax_error(tokenlist,it);
-					//pre_error = 1;
-					it->flag = -1;
-					do {		// get out of line.
-						it++;
-					} while(it != tokenlist.end() && target_line == it->line_number);
-				}
-
-			} else {
-				cerr << "Sintax Error @ Line " << target_line << " - missing argument." << endl;
-				//mark_sintax_error(tokenlist,it);
-				//pre_error = 1;
-				it->flag = -1;
-			}
 		break;
+		case DIR_CONST :
 
-		case OP_STOP:
-			it++;
-			if (it != tokenlist.end() && target_line == it->line_number){		// check if argument exist.
-				cerr << "Sintax Error @ Line " << target_line << " - unexpected argument." << endl;
-				//mark_sintax_error(tokenlist,it);
-				//pre_error = 1;
-				it->flag = -1;
-				do {		// get out of line.
-					it++;
-				} while(it != tokenlist.end() && target_line == it->line_number);
-			}
+		break;
+		case DIR_EQU :
+
+		break;
+		case DIR_IF :
+
+		break;
+		case DIR_MACRO :
+
+		break;
+		case DIR_ENDMACRO :
+
+		break;
+		case DIR_TEXT :
+			nasmfile << ".text\n";
+			it ++;
+		break;
+		case DIR_DATA :
+			nasmfile << ".data\n";
+			it ++;
+		break;
+		case DIR_BEGIN :
+
+		break;
+		case DIR_END :
+
+		break;
+		case DIR_EXTERN :
+
+		break;
+		case DIR_PUBLIC :
+
+		break;
+		case DIR_BSS :
+			nasmfile << ".bss\n";
+			it ++;
 		break;
 
 		default:
-			cerr << "translator: unknowm mnemonic token (" << it->str << ")." << endl;
-			//mark_sintax_error(tokenlist,it);
-			//pre_error = 1;
-			it->flag = -1;
+			cerr << "Parser: unknowm token type (" << it->str << ")." << endl;
 			it++;
 		break;
-	}
-
-	return it;
-}
-
-list<Token>::iterator translator_directive(list <Token> & tokenlist, list<Token>::iterator it){
-	int target_line;
-
-	target_line = it->line_number;
-	switch (it->addit_info){
-		case DIR_SECTION:
-			it++;
-			if (it != tokenlist.end() && target_line == it->line_number){										// check if arguments exists.
-				if (it->type == TT_DIRECTIVE && (it->addit_info == DIR_TEXT || it->addit_info == DIR_DATA || it->addit_info == DIR_BSS)){	// check if argument is valid.
-					it++;
-					if (it != tokenlist.end() && target_line == it->line_number){								// check if too much arguments.
-						cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-						//mark_sintax_error(tokenlist,it);
-						//pre_error = 1;
-						it->flag = -1;
-						do {		// get out of line.
-							it++;
-						} while(it != tokenlist.end() && target_line == it->line_number);
-					}
-				} else {
-					cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-					//mark_sintax_error(tokenlist,it);
-					//pre_error = 1;
-					it->flag = -1;
-					do {		// get out of line.
-						it++;
-					} while(it != tokenlist.end() && target_line == it->line_number);
-				}
-			} else {
-				cerr << "Sintax Error @ Line " << target_line << " - missing argument." << endl;
-				//mark_sintax_error(tokenlist,it);
-				//pre_error = 1;
-				it->flag = -1;
-			}
-		break;
-
-		case DIR_SPACE:
-			it++;
-			if (it != tokenlist.end() && target_line == it->line_number){			// check if argument exist.
-				if (it->type == TT_CONST && it->addit_info > 0){											// check if argument is valid
-					it++;
-					if (it != tokenlist.end() && target_line == it->line_number){	// check if too much arguments.
-						cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-						//mark_sintax_error(tokenlist,it);
-						//pre_error = 1;
-						it->flag = -1;
-						do {		// get out of line.
-							it++;
-						} while(it != tokenlist.end() && target_line == it->line_number);
-					}
-				} else {
-					cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-					//mark_sintax_error(tokenlist,it);
-					//pre_error = 1;
-					it->flag = -1;
-					do {		// get out of line.
-						it++;
-					} while(it != tokenlist.end() && target_line == it->line_number);
-				}
-			}
-		break;
-
-		case DIR_CONST:
-			it++;
-			if (it != tokenlist.end() && target_line == it->line_number){			// check if argument exist.
-				if (it->type == TT_CONST){											// check if argument is valid
-					it++;
-					if (it != tokenlist.end() && target_line == it->line_number){	// check if too much arguments.
-						cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-						//mark_sintax_error(tokenlist,it);
-						//pre_error = 1;
-						it->flag = -1;
-						do {		// get out of line.
-							it++;
-						} while(it != tokenlist.end() && target_line == it->line_number);
-					}
-				} else {
-					cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-					//mark_sintax_error(tokenlist,it);
-					//pre_error = 1;
-					it->flag = -1;
-					do {		// get out of line.
-						it++;
-					} while(it != tokenlist.end() && target_line == it->line_number);
-				}
-			} else {
-				cerr << "Sintax Error @ Line " << target_line << " - missing argument." << endl;
-				//mark_sintax_error(tokenlist,it);
-				//pre_error = 1;
-				it->flag = -1;
-			}
-		break;
-
-		case DIR_IF:
-			it++;
-			if (it != tokenlist.end() && target_line == it->line_number){			// check if argument exist.
-				if (it->type == TT_AMPERSAND_OPERATOR){		// ignores argument indicator.
-					it++;
-					if (it == tokenlist.end() || target_line != it->line_number){
-						//mark_sintax_error(tokenlist,it);
-										//pre_error = 1;
-										it->flag = -1;
-						cerr << "Sintax Error @ Line " << target_line << " - missing argument." << endl;
-					}
-				}
-				if (it->type == TT_CONST || it->type == TT_OPERAND){				// check if argument is valid
-					it++;
-					if (it != tokenlist.end() && target_line == it->line_number){	// check if too much arguments.
-						cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-						//mark_sintax_error(tokenlist,it);
-						//pre_error = 1;
-						it->flag = -1;
-						do {		// get out of line.
-							it++;
-						} while(it != tokenlist.end() && target_line == it->line_number);
-					}
-				} else {
-					cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-					//mark_sintax_error(tokenlist,it);
-					//pre_error = 1;
-					it->flag = -1;
-					do {		// get out of line.
-						it++;
-					} while(it != tokenlist.end() && target_line == it->line_number);
-				}
-			} else {
-				cerr << "Sintax Error @ Line " << target_line << " - missing argument." << endl;
-				//mark_sintax_error(tokenlist,it);
-				//pre_error = 1;
-				it->flag = -1;
-			}
-		break;
-
-		case DIR_MACRO:
-			it++;
-			// first argument.
-			if (it != tokenlist.end() && target_line == it->line_number){		// check if argument exist.
-				if (it->type == TT_AMPERSAND_OPERATOR){							// check argument operator.
-					it++;
-					if (it != tokenlist.end() && target_line == it->line_number){	// check if argument is present.
-						if (it->type == TT_OPERAND){								// check if argument is valid.
-							it++;
-						} else {
-							//mark_sintax_error(tokenlist,it);
-										//pre_error = 1;
-										it->flag = -1;
-							cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-							do {		// get out of line.
-								it++;
-							} while(it != tokenlist.end() && target_line == it->line_number);
-							break;
-						}
-					} else {
-						//mark_sintax_error(tokenlist,it);
-										//pre_error = 1;
-										it->flag = -1;
-						cerr << "Sintax Error @ Line " << target_line << " - missing argument." << endl;
-						break;
-					}
-				} else {
-					//mark_sintax_error(tokenlist,it);
-										//pre_error = 1;
-										it->flag = -1;
-					cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-					do {		// get out of line.
-						it++;
-					} while(it != tokenlist.end() && target_line == it->line_number);
-					break;
-				}
-			} else {
-				break;
-			}
-
-			// second argument.
-			if (it != tokenlist.end() && target_line == it->line_number){		// check if argument exist.
-				if (it->type == TT_COMMA_OPERATOR){								// check argument separator indicator.
-					it++;
-					if (it == tokenlist.end() || target_line != it->line_number){
-						//mark_sintax_error(tokenlist,it);
-										//pre_error = 1;
-										it->flag = -1;
-						cerr << "Sintax Error @ Line " << target_line << " - missing argument." << endl;
-						break;
-					}
-				} else {
-					//mark_sintax_error(tokenlist,it);
-										//pre_error = 1;
-										it->flag = -1;
-					cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-					do {		// get out of line.
-						it++;
-					} while(it != tokenlist.end() && target_line == it->line_number);
-					break;
-				}
-				if (it->type == TT_AMPERSAND_OPERATOR){							// check argument operator.
-					it++;
-					if (it != tokenlist.end() && target_line == it->line_number){	// check if argument is present.
-						if (it->type == TT_OPERAND){								// check if argument is valid.
-							it++;
-						} else {
-							//mark_sintax_error(tokenlist,it);
-										//pre_error = 1;
-										it->flag = -1;
-							cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-							do {		// get out of line.
-								it++;
-							} while(it != tokenlist.end() && target_line == it->line_number);
-							break;
-						}
-					} else {
-						//mark_sintax_error(tokenlist,it);
-										//pre_error = 1;
-										it->flag = -1;
-						cerr << "Sintax Error @ Line " << target_line << " - missing argument." << endl;
-						break;
-					}
-				} else {
-					//mark_sintax_error(tokenlist,it);
-										//pre_error = 1;
-										it->flag = -1;
-					cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-					do {		// get out of line.
-						it++;
-					} while(it != tokenlist.end() && target_line == it->line_number);
-					break;
-				}
-			} else {
-				break;
-			}
-
-			// third argument.
-			if (it != tokenlist.end() && target_line == it->line_number){		// check if argument exist.
-				if (it->type == TT_COMMA_OPERATOR){								// check argument separator indicator.
-					it++;
-					if (it == tokenlist.end() || target_line != it->line_number){
-						//mark_sintax_error(tokenlist,it);
-										//pre_error = 1;
-										it->flag = -1;
-						cerr << "Sintax Error @ Line " << target_line << " - missing argument." << endl;
-						break;
-					}
-				} else {
-					//mark_sintax_error(tokenlist,it);
-										//pre_error = 1;
-										it->flag = -1;
-					cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-					do {		// get out of line.
-						it++;
-					} while(it != tokenlist.end() && target_line == it->line_number);
-					break;
-				}
-				if (it->type == TT_AMPERSAND_OPERATOR){							// check argument operator.
-					it++;
-					if (it != tokenlist.end() && target_line == it->line_number){	// check if argument is present.
-						if (it->type == TT_OPERAND){								// check if argument is valid.
-							it++;
-						} else {
-							//mark_sintax_error(tokenlist,it);
-										//pre_error = 1;
-										it->flag = -1;
-							cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-							do {		// get out of line.
-								it++;
-							} while(it != tokenlist.end() && target_line == it->line_number);
-							break;
-						}
-					} else {
-						//mark_sintax_error(tokenlist,it);
-										//pre_error = 1;
-										it->flag = -1;
-						cerr << "Sintax Error @ Line " << target_line << " - missing argument." << endl;
-						break;
-					}
-				} else {
-					//mark_sintax_error(tokenlist,it);
-										//pre_error = 1;
-										it->flag = -1;
-					cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-					do {		// get out of line.
-						it++;
-					} while(it != tokenlist.end() && target_line == it->line_number);
-					break;
-				}
-			} else {
-				break;
-			}
-
-			// fourth argument.
-			if (it != tokenlist.end() && target_line == it->line_number){		// check if argument exist.
-				if (it->type == TT_COMMA_OPERATOR){								// check argument separator indicator.
-					it++;
-					if (it == tokenlist.end() || target_line != it->line_number){
-						//mark_sintax_error(tokenlist,it);
-										//pre_error = 1;
-										it->flag = -1;
-						cerr << "Sintax Error @ Line " << target_line << " - missing argument." << endl;
-						break;
-					}
-				} else {
-					//mark_sintax_error(tokenlist,it);
-										//pre_error = 1;
-										it->flag = -1;
-					cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-					do {		// get out of line.
-						it++;
-					} while(it != tokenlist.end() && target_line == it->line_number);
-					break;
-				}
-				if (it->type == TT_AMPERSAND_OPERATOR){							// check argument operator.
-					it++;
-					if (it != tokenlist.end() && target_line == it->line_number){	// check if argument is present.
-						if (it->type == TT_OPERAND){								// check if argument is valid.
-							it++;
-						} else {
-							//mark_sintax_error(tokenlist,it);
-										//pre_error = 1;
-										it->flag = -1;
-							cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-							do {		// get out of line.
-								it++;
-							} while(it != tokenlist.end() && target_line == it->line_number);
-							break;
-						}
-					} else {
-						//mark_sintax_error(tokenlist,it);
-										//pre_error = 1;
-										it->flag = -1;
-						cerr << "Sintax Error @ Line " << target_line << " - missing argument." << endl;
-						break;
-					}
-				} else {
-					//mark_sintax_error(tokenlist,it);
-										//pre_error = 1;
-										it->flag = -1;
-					cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-					do {		// get out of line.
-						it++;
-					} while(it != tokenlist.end() && target_line == it->line_number);
-					break;
-				}
-			} else {
-				break;
-			}
-
-			if (it != tokenlist.end() && target_line == it->line_number){		// check if too much arguments.
-				//mark_sintax_error(tokenlist,it);
-										//pre_error = 1;
-										it->flag = -1;
-				cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-				do {		// get out of line.
-					it++;
-				} while(it != tokenlist.end() && target_line == it->line_number);
-			}
-		break;
-
-		case DIR_ENDMACRO:
-			it++;
-			if (it != tokenlist.end() && target_line == it->line_number){		// check if argument exist.
-				//mark_sintax_error(tokenlist,it);
-										//pre_error = 1;
-										it->flag = -1;
-				cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-				do {		// get out of line.
-					it++;
-				} while(it != tokenlist.end() && target_line == it->line_number);
-			}
-		break;
-
-		case DIR_TEXT:
-		case DIR_DATA:
-		case DIR_BSS:
-			cerr << "Sintax Error @ Line " << target_line << " - invalid use of directive." << endl;
-			//mark_sintax_error(tokenlist,it);
-			//pre_error = 1;
-			it->flag = -1;
-			do {		// get out of line.
-				it++;
-			} while(it != tokenlist.end() && target_line == it->line_number);
-		break;
-
-		case DIR_EQU:	// if found in this stage, it must be an invalid EQU.
-			do {		// get out of line.
-				it++;
-			} while(it != tokenlist.end() && target_line == it->line_number);
-		break;
-
-		case DIR_BEGIN:
-		case DIR_EXTERN:
-			it--;
-			if (it->type == TT_LABEL) {		// check if have label.
-				it++;
-				it++;
-
-				if (it != tokenlist.end() && target_line == it->line_number){		// check if argument exist.
-					cerr << "Sintax Error @ Line " << target_line << " - unexpected argument." << endl;
-					//mark_sintax_error(tokenlist,it);
-					//pre_error = 1;
-					it->flag = -1;
-					do {		// get out of line.
-						it++;
-					} while(it != tokenlist.end() && target_line == it->line_number);
-				}
-			} else {
-				it++;
-
-				cerr << "Sintax Error @ Line " << target_line << " - invalid use of directive." << endl;
-				//mark_sintax_error(tokenlist,it);
-				//pre_error = 1;
-				it->flag = -1;
-				do {		// get out of line.
-					it++;
-				} while(it != tokenlist.end() && target_line == it->line_number);
-			}
-		break;
-
-		case DIR_END:
-			it++;
-
-			if (it != tokenlist.end() && target_line == it->line_number){		// check if argument exist.
-				cerr << "Sintax Error @ Line " << target_line << " - unexpected argument." << endl;
-				//mark_sintax_error(tokenlist,it);
-				//pre_error = 1;
-				it->flag = -1;
-				do {		// get out of line.
-					it++;
-				} while(it != tokenlist.end() && target_line == it->line_number);
-			}
-		break;
-
-		case DIR_PUBLIC:
-			it++;
-
-			if (it != tokenlist.end() && target_line == it->line_number){	// check if argument is present.
-				if (it->type == TT_OPERAND){								// check if argument is valid.
-					it++;
-
-					if (it != tokenlist.end() && target_line == it->line_number){		// check if argument exist.
-						cerr << "Sintax Error @ Line " << target_line << " - unexpected argument." << endl;
-						//mark_sintax_error(tokenlist,it);
-						//pre_error = 1;
-						it->flag = -1;
-						do {		// get out of line.
-							it++;
-						} while(it != tokenlist.end() && target_line == it->line_number);
-					}
-				} else {
-					//mark_sintax_error(tokenlist,it);
-								//pre_error = 1;
-								it->flag = -1;
-					cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-					do {		// get out of line.
-						it++;
-					} while(it != tokenlist.end() && target_line == it->line_number);
-					break;
-				}
-			} else {
-				//mark_sintax_error(tokenlist,it);
-								//pre_error = 1;
-								it->flag = -1;
-				cerr << "Sintax Error @ Line " << target_line << " - missing argument." << endl;
-				break;
-			}
-		break;
-
-		default:
-			cerr << "translator: unknowm directive token (" << it->str << ")." << endl;
-			//mark_sintax_error(tokenlist,it);
-			//pre_error = 1;
-			it->flag = -1;
-			it++;
-		break;
-	}
-
-	return it;
-}
-
-
-list<Token>::iterator translator_operand(list <Token> & tokenlist, list<Token>::iterator it){
-	int target_line;
-	target_line = it->line_number;
-
-	// expects to be a macro calling.
-	it++;
-	// first argument.
-	if (it != tokenlist.end() && target_line == it->line_number){		// check if argument exist.
-		if (it->type == TT_AMPERSAND_OPERATOR){		// ignores argument indicator.
-			it++;
-			if (it == tokenlist.end() || target_line != it->line_number){
-				return it;
-			}
 		}
-		if (it->type == TT_OPERAND){									// check if argument is valid.
-			it++;
-		} else {
-			//mark_sintax_error(tokenlist,it);
-										//pre_error = 1;
-										it->flag = -1;
-			cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-			do {		// get out of line.
-				it++;
-			} while(it != tokenlist.end() && target_line == it->line_number);
-			return it;
-		}
-	} else {
-		return it;
-	}
-
-	// second argument.
-	if (it != tokenlist.end() && target_line == it->line_number){		// check if argument exist.
-		if (it->type == TT_COMMA_OPERATOR){							// check argument separator operator.
-			it++;
-			if (it != tokenlist.end() && target_line == it->line_number){	// check if argument is present.
-				if (it->type == TT_AMPERSAND_OPERATOR){		// ignores argument indicator.
-					it++;
-					if (it == tokenlist.end() || target_line != it->line_number){
-						return it;
-					}
-				}
-				if (it->type == TT_OPERAND){								// check if argument is valid.
-					it++;
-				} else {
-					cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-					//mark_sintax_error(tokenlist,it);
-					//pre_error = 1;
-					it->flag = -1;
-					do {		// get out of line.
-						it++;
-					} while(it != tokenlist.end() && target_line == it->line_number);
-					return it;
-				}
-			} else {
-				//mark_sintax_error(tokenlist,it);
-										//pre_error = 1;
-										it->flag = -1;
-				cerr << "Sintax Error @ Line " << target_line << " - missing argument." << endl;
-				return it;
-			}
-		} else {
-			cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-			//mark_sintax_error(tokenlist,it);
-			//pre_error = 1;
-			it->flag = -1;
-			do {		// get out of line.
-				it++;
-			} while(it != tokenlist.end() && target_line == it->line_number);
-			return it;
-		}
-	} else {
-		return it;
-	}
-
-	// third argument.
-	if (it != tokenlist.end() && target_line == it->line_number){		// check if argument exist.
-		if (it->type == TT_COMMA_OPERATOR){							// check argument separator operator.
-			it++;
-			if (it != tokenlist.end() && target_line == it->line_number){	// check if argument is present.
-				if (it->type == TT_AMPERSAND_OPERATOR){		// ignores argument indicator.
-					it++;
-					if (it == tokenlist.end() || target_line != it->line_number){
-						return it;
-					}
-				}
-				if (it->type == TT_OPERAND){								// check if argument is valid.
-					it++;
-				} else {
-					//mark_sintax_error(tokenlist,it);
-										//pre_error = 1;
-										it->flag = -1;
-					cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-					do {		// get out of line.
-						it++;
-					} while(it != tokenlist.end() && target_line == it->line_number);
-					return it;
-				}
-			} else {
-				//mark_sintax_error(tokenlist,it);
-										//pre_error = 1;
-										it->flag = -1;
-				cerr << "Sintax Error @ Line " << target_line << " - missing argument." << endl;
-				return it;
-			}
-		} else {
-			//mark_sintax_error(tokenlist,it);
-										//pre_error = 1;
-										it->flag = -1;
-			cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-			do {		// get out of line.
-				it++;
-			} while(it != tokenlist.end() && target_line == it->line_number);
-			return it;
-		}
-	} else {
-		return it;
-	}
-
-	// fourth argument.
-	if (it != tokenlist.end() && target_line == it->line_number){		// check if argument exist.
-		if (it->type == TT_COMMA_OPERATOR){							// check argument separator operator.
-			it++;
-			if (it != tokenlist.end() && target_line == it->line_number){	// check if argument is present.
-				if (it->type == TT_AMPERSAND_OPERATOR){		// ignores argument indicator.
-					it++;
-					if (it == tokenlist.end() || target_line != it->line_number){
-						return it;
-					}
-				}
-				if (it->type == TT_OPERAND){								// check if argument is valid.
-					it++;
-				} else {
-					//mark_sintax_error(tokenlist,it);
-										//pre_error = 1;
-										it->flag = -1;
-					cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-					do {		// get out of line.
-						it++;
-					} while(it != tokenlist.end() && target_line == it->line_number);
-					return it;
-				}
-			} else {
-				//mark_sintax_error(tokenlist,it);
-										//pre_error = 1;
-										it->flag = -1;
-				cerr << "Sintax Error @ Line " << target_line << " - missing argument." << endl;
-				return it;
-			}
-		} else {
-			//mark_sintax_error(tokenlist,it);
-										//pre_error = 1;
-										it->flag = -1;
-			cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-			do {		// get out of line.
-				it++;
-			} while(it != tokenlist.end() && target_line == it->line_number);
-			return it;
-		}
-	} else {
-		return it;
-	}
-
-	if (it != tokenlist.end() && target_line == it->line_number){		// check if too much arguments.
-		//mark_sintax_error(tokenlist,it);
-										//pre_error = 1;
-										it->flag = -1;
-		cerr << "Sintax Error @ Line " << target_line << " - invalid argument." << endl;
-		do {		// get out of line.
-			it++;
-		} while(it != tokenlist.end() && target_line == it->line_number);
-	}
-	return it;
-}
-
-list<Token>::iterator translator_const(list <Token> & tokenlist, list<Token>::iterator it){
-	int target_line;
-	target_line = it->line_number;
-
- cerr << "Sintax Error @ Line " << target_line << " - unexpected value." << endl;
- //mark_sintax_error(tokenlist,it);
- //pre_error = 1;
- it->flag = -1;
-	do {		// get out of line.
-		it++;
-	} while(it != tokenlist.end() && target_line == it->line_number);
-
-	return it;
-}
-
-list<Token>::iterator translator_ampersand(list <Token> & tokenlist, list<Token>::iterator it){
-	int target_line;
-	target_line = it->line_number;
-
-	it++;
-	if (it == tokenlist.end() || target_line != it->line_number){
-		//mark_sintax_error(tokenlist,it);
-										//pre_error = 1;
-										it->flag = -1;
-		cerr << "Sintax Error @ Line " << target_line << " - ." << endl;
-	}
-
-	return it;
-}
-
-list<Token>::iterator translator_label(list <Token> & tokenlist, list<Token>::iterator it){
-	int target_line;
-	target_line = it->line_number;
-
-	it++;
-	if (it == tokenlist.end() || target_line != it->line_number){
-		//mark_sintax_error(tokenlist,it);
-										//pre_error = 1;
-										it->flag = -1;
-		cerr << "Sintax Error @ Line " << target_line << " - empty label." << endl;
-	} else {
-		if (it->type == TT_LABEL){
-			//mark_sintax_error(tokenlist,it);
-										//pre_error = 1;
-										it->flag = -1;
-			cerr << "Sintax Error @ Line " << target_line << " - multiple labels in line." << endl;
-			do {		// get out of line.
-				it++;
-			} while(it != tokenlist.end() && target_line == it->line_number);
-		}
-	}
-
+		nasmfile.close();
 	return it;
 }
