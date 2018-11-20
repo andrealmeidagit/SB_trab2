@@ -8,7 +8,7 @@ ofstream nasmfile( s );  //opens NASM file in write mode
 	for (it = tokenlist.begin();it != tokenlist.end(); it++){	//scans whole file
 
 		ofstream nasmfile( s );  //opens NASM file
-		nasmfile << "global      _start\n_start:\n";
+		nasmfile << "global      _start\n";
 		nasmfile.close();
 
 		switch (it->type){
@@ -158,7 +158,7 @@ list<Token>::iterator transl_directive(list<Token>::iterator it, char * s){
 
 		break;
 		case DIR_TEXT :
-			nasmfile << ".text\n";
+			nasmfile << ".text\n_start: ";
 			it ++;
 		break;
 		case DIR_DATA :

@@ -32,9 +32,6 @@ int main (){
 
     translator(tokenlist, out_filename);                     //uses parser structure to translate code
 
-    #ifdef __DEBUG__
-        print_list (tokenlist);
-    #endif
 
     return 0;
 }
