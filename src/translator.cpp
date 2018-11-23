@@ -4,31 +4,16 @@
 
 int translator (list <Token> & tokenlist, char * s){
 	list<Token>::iterator it;
-#ifdef __DEBUG2__
-cout << "foi1" << endl;
-#endif
 	ofstream nasmfile( s, ios_base::app);  //opens NASM file in output mode - always writes at end (append)
-#ifdef __DEBUG2__
-cout << "foi2" << endl;
-#endif
 	if (nasmfile.is_open())
 		nasmfile << "global      _start" << endl;
 	else{
 		cout << "Falha na criação ou abertura do arquivo." << endl;
 		exit(EXIT_FAILURE);
 	}
-#ifdef __DEBUG2__
-cout << "foi3" << endl;
-#endif
 	nasmfile.close();
-#ifdef __DEBUG2__
-cout << "foi4" << endl;
-#endif
 
 	for (it = tokenlist.begin();it != tokenlist.end(); it++){	//scans whole file
-		#ifdef __DEBUG2__
-		cout << "foi5" << endl;
-		#endif
 		switch (it->type){
 			case TT_MNEMONIC:		//check OPCODE table
 				#ifdef __DEBUG2__
@@ -58,7 +43,6 @@ cout << "foi4" << endl;
 				#ifdef __DEBUG2__
 				cout << "foi-outro - " << it->str << endl;
 				#endif
-				it++;
 			break;
 			default:
 				cerr << "Parser: unknowm token type (" << it->str << ")." << endl;
