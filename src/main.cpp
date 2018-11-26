@@ -13,7 +13,7 @@ Alunos: Andre Abreu Rodrigues de Almeida    12/0007100
 #include "translator.h"
 using namespace std;
 
-#define __DEBUG__
+//#define __DEBUG__
 
 int error_found;
 

@@ -1,6 +1,6 @@
 #include "translator.h"
 
-#define __DEBUG2__
+//#define __DEBUG2__
 
 int translator (list <Token> & tokenlist, char * s){
 	list<Token>::iterator it;
@@ -65,7 +65,7 @@ list<Token>::iterator transl_mnemonic(list<Token>::iterator it, char * s){
                 }else{
                     nasmfile << "[" << it->str << "]" << endl;
                 }
-                it++;
+            //    it++;
 
 			}else{
 		 		cout << "Falha na criação ou abertura do arquivo." << endl;
@@ -99,7 +99,7 @@ list<Token>::iterator transl_mnemonic(list<Token>::iterator it, char * s){
 				 }else{
 				     nasmfile << "DWORD[" << it->str << "]" << endl;
                  }
-				 it++;
+			//	 it++;
 
 			 }else{
 				 cout << "Falha na criação ou abertura do arquivo." << endl;
@@ -116,7 +116,7 @@ list<Token>::iterator transl_mnemonic(list<Token>::iterator it, char * s){
                  }else{
                      nasmfile << "DWORD[" << it->str << "]" << endl;
                  }
-                 it++;
+    //             it++;
 
 			 }else{
 				 cout << "Falha na criação ou abertura do arquivo." << endl;
@@ -143,7 +143,7 @@ list<Token>::iterator transl_mnemonic(list<Token>::iterator it, char * s){
 				 nasmfile << "jb" << endl;
 				 it++;
 				 nasmfile << it->str << endl;
-				 it++;
+	//			 it++;
 			 }else{
 				 cout << "Falha na criação ou abertura do arquivo." << endl;
 				 exit(EXIT_FAILURE);
@@ -157,7 +157,7 @@ list<Token>::iterator transl_mnemonic(list<Token>::iterator it, char * s){
 				 nasmfile << "ja" << endl;
 				 it++;
 				 nasmfile << it->str << endl;
-				 it++;
+		//		 it++;
 			 }else{
 				 cout << "Falha na criação ou abertura do arquivo." << endl;
 				 exit(EXIT_FAILURE);
@@ -170,7 +170,7 @@ list<Token>::iterator transl_mnemonic(list<Token>::iterator it, char * s){
 				 nasmfile << "je" << endl;
 				 it++;
 				 nasmfile << it->str << endl;
-				 it++;
+	//			 it++;
 			 }else{
 				 cout << "Falha na criação ou abertura do arquivo." << endl;
 				 exit(EXIT_FAILURE);
@@ -195,7 +195,7 @@ list<Token>::iterator transl_mnemonic(list<Token>::iterator it, char * s){
                  }else{
                      nasmfile << "[" << it->str << "]" << endl;
                  }
-				 it++;
+	//			 it++;
 			 }else{
 				 cout << "Falha na criação ou abertura do arquivo." << endl;
 				 exit(EXIT_FAILURE);
@@ -211,7 +211,7 @@ list<Token>::iterator transl_mnemonic(list<Token>::iterator it, char * s){
                  }else{
                      nasmfile << "[" << it->str << "]" << endl;
                  }
-				 it++;
+	//			 it++;
 			 }else{
 				 cout << "Falha na criação ou abertura do arquivo." << endl;
 				 exit(EXIT_FAILURE);
@@ -242,7 +242,7 @@ list<Token>::iterator transl_mnemonic(list<Token>::iterator it, char * s){
 				 nasmfile << "pop ecx"<< endl;
 				 nasmfile << "pop ebx"<< endl;
 				 nasmfile << "pop eax"<< endl;
-				 it++;
+//				 it++;
 			 }else{
 				 cout << "Falha na criação ou abertura do arquivo." << endl;
 				 exit(EXIT_FAILURE);
@@ -270,7 +270,7 @@ list<Token>::iterator transl_mnemonic(list<Token>::iterator it, char * s){
 				 nasmfile << "pop ecx"<< endl;
 				 nasmfile << "pop ebx"<< endl;
 				 nasmfile << "pop eax"<< endl;
-				 it++;
+	//			 it++;
 
 			 }else{
 				 cout << "Falha na criação ou abertura do arquivo." << endl;
@@ -300,7 +300,7 @@ list<Token>::iterator transl_mnemonic(list<Token>::iterator it, char * s){
 				 nasmfile << "pop ecx"<< endl;
 				 nasmfile << "pop ebx"<< endl;
 				 nasmfile << "pop eax"<< endl;
-				 it++;
+	//			 it++;
 			 }else{
 				 cout << "Falha na criação ou abertura do arquivo." << endl;
 				 exit(EXIT_FAILURE);
@@ -328,7 +328,7 @@ list<Token>::iterator transl_mnemonic(list<Token>::iterator it, char * s){
 				 nasmfile << "pop ecx"<< endl;
 				 nasmfile << "pop ebx"<< endl;
 				 nasmfile << "pop eax"<< endl;
-				 it++;
+	//			 it++;
 
 			 }else{
 				 cout << "Falha na criação ou abertura do arquivo." << endl;
@@ -417,7 +417,7 @@ list<Token>::iterator transl_mnemonic(list<Token>::iterator it, char * s){
 
 		 default:
 			 cerr << "Parser: unknowm token type (" << it->str << ")." << endl;
-			 it++;
+//			 it++;
 		 break;
 	}
 	nasmfile.close();
@@ -432,7 +432,7 @@ list<Token>::iterator transl_label(list<Token>::iterator it, char * s){
 		cout << "Falha na criação ou abertura do arquivo." << endl;
 		exit(EXIT_FAILURE);
 	}
-	it ++;
+//	it ++;
 	nasmfile.close();
 	return it;
 }
@@ -447,18 +447,18 @@ list<Token>::iterator transl_directive(list<Token>::iterator it, char * s){
 				cout << "Falha na criação ou abertura do arquivo." << endl;
 				exit(EXIT_FAILURE);
 			}
-			it ++;
+//			it ++;
 		break;
 		case DIR_SPACE :
             nasmfile << "resw 1" << endl;
-            it++;
+//            it++;
 
 		break;
 		case DIR_CONST :
             nasmfile << "dw ";
             it++;
             nasmfile << it->str << endl;
-            it++;
+//            it++;
 
 		break;
 		case DIR_EQU :
@@ -480,7 +480,7 @@ list<Token>::iterator transl_directive(list<Token>::iterator it, char * s){
 				cout << "Falha na criação ou abertura do arquivo." << endl;
 				exit(EXIT_FAILURE);
 			}
-			it ++;
+//			it ++;
 		break;
 		case DIR_DATA :
 			if (nasmfile.is_open())
@@ -489,7 +489,7 @@ list<Token>::iterator transl_directive(list<Token>::iterator it, char * s){
 				cout << "Falha na criação ou abertura do arquivo." << endl;
 				exit(EXIT_FAILURE);
 			}
-			it ++;
+//			it ++;
 		break;
 		case DIR_BEGIN :
 
@@ -510,12 +510,12 @@ list<Token>::iterator transl_directive(list<Token>::iterator it, char * s){
 				cout << "Falha na criação ou abertura do arquivo." << endl;
 				exit(EXIT_FAILURE);
 			}
-			it ++;
+//			it ++;
 		break;
 
 		default:
 			cerr << "Parser: unknowm token type (" << it->str << ")." << endl;
-			it++;
+//			it++;
 		break;
 		}
 		nasmfile.close();
