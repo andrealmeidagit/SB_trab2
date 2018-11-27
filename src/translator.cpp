@@ -99,8 +99,6 @@ list<Token>::iterator transl_mnemonic(list<Token>::iterator it, char * s){
 				 }else{
 				     nasmfile << "DWORD[" << it->str << "]" << endl;
                  }
-			//	 it++;
-
 			 }else{
 				 cout << "Falha na criação ou abertura do arquivo." << endl;
 				 exit(EXIT_FAILURE);
@@ -116,8 +114,6 @@ list<Token>::iterator transl_mnemonic(list<Token>::iterator it, char * s){
                  }else{
                      nasmfile << "DWORD[" << it->str << "]" << endl;
                  }
-    //             it++;
-
 			 }else{
 				 cout << "Falha na criação ou abertura do arquivo." << endl;
 				 exit(EXIT_FAILURE);
@@ -453,6 +449,7 @@ list<Token>::iterator transl_label(list<Token>::iterator it, char * s){
 }
 
 list<Token>::iterator transl_directive(list<Token>::iterator it, char * s){
+	int i =0;
 	ofstream nasmfile( s, ios::out | ios::app);  //opens NASM file in output mode - always writes at end (append)
 	switch (it->addit_info){
 		case DIR_SECTION :
@@ -477,10 +474,37 @@ list<Token>::iterator transl_directive(list<Token>::iterator it, char * s){
 
 		break;
 		case DIR_EQU :
-
+		if (nasmfile.is_open()){
+			nasmfile << "%define ";
+			it++;
+			nasmfile << it->str << " ";
+			it++;
+			nasmfile << it->str << endl;
+		}else{
+			cout << "Falha na criação ou abertura do arquivo." << endl;
+			exit(EXIT_FAILURE);
+		}
 		break;
 		case DIR_IF :
-
+		i = it->line_number;
+		if (nasmfile.is_open()){
+			nasmfile << "%if<";
+			it++;
+			while (it->line_number == i){
+				nasmfile << it->str << " ";
+				it++;
+			}
+			nasmfile << ">" << endl;
+			i++;
+			while (it->line_number == i){
+				nasmfile << it->str << " ";
+				it++;
+			}
+			nasmfile << endl;
+		}else{
+			cout << "Falha na criação ou abertura do arquivo." << endl;
+			exit(EXIT_FAILURE);
+		}
 		break;
 		case DIR_MACRO :
 
