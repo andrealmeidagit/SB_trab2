@@ -91,20 +91,42 @@ list<Token>::iterator transl_mnemonic(list<Token>::iterator it, char * s){
 
 		 break;
 		 case OP_MULT     :
-			 if (nasmfile.is_open()){
-				 nasmfile << "imul ";
-				 it++;
-				 if (it->type == TT_CONST) {
-				     nasmfile << it->str << endl;
-				 }else{
-				     nasmfile << "DWORD[" << it->str << "]" << endl;
-                 }
+		 if (nasmfile.is_open()){
+			 nasmfile << "mov edx, 0" << endl;
+			 nasmfile << "imul ";
+			 it++;
+			 if (it->type == TT_CONST) {
+				 nasmfile << it->str << endl;
 			 }else{
-				 cout << "Falha na criação ou abertura do arquivo." << endl;
-				 exit(EXIT_FAILURE);
+				 nasmfile << "DWORD[" << it->str << "]" << endl;
 			 }
+			 nasmfile << "cmp edx, 0xffffffff" << endl;
+			 nasmfile << "je Overflow" << endl;
+			 nasmfile << "jmp NotOverflow" << endl;
+			 nasmfile << "Overflow:" << endl;
+			 nasmfile << "push eax"<< endl;
+			 nasmfile << "push ebx"<< endl;
+			 nasmfile << "push ecx"<< endl;
+			 nasmfile << "push edx"<< endl;
 
+			 nasmfile << "mov eax, 4"<< endl;
+			 nasmfile << "mov ebx, 1"<< endl;
+			 nasmfile << "mov ecx, 'OVFL' " << endl;
+
+			 nasmfile << "mov edx, 1" << endl;
+			 nasmfile << "int 0x80"<< endl;
+
+			 nasmfile << "pop edx"<< endl;
+			 nasmfile << "pop ecx"<< endl;
+			 nasmfile << "pop ebx"<< endl;
+			 nasmfile << "pop eax"<< endl;
+			 nasmfile << "NotOverflow:" << endl;
+		 }else{
+			 cout << "Falha na criação ou abertura do arquivo." << endl;
+			 exit(EXIT_FAILURE);
+		 }
 		 break;
+
 		 case OP_DIV      :
 			 if (nasmfile.is_open()){
 				 nasmfile << "idiv ";
@@ -118,9 +140,8 @@ list<Token>::iterator transl_mnemonic(list<Token>::iterator it, char * s){
 				 cout << "Falha na criação ou abertura do arquivo." << endl;
 				 exit(EXIT_FAILURE);
 			 }
-
-
 		 break;
+		 
 		 case OP_JMP      :
 			 if (nasmfile.is_open()){
 				 nasmfile << "jmp ";
