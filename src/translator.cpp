@@ -140,7 +140,7 @@ list<Token>::iterator transl_mnemonic(list<Token>::iterator it, char * s){
 		 case OP_JMPN     :
 			 if (nasmfile.is_open()){
 				 nasmfile << "cmp eax, 0" << endl;
-				 nasmfile << "jb" << endl;
+				 nasmfile << "jb ";
 				 it++;
 				 nasmfile << it->str << endl;
 	//			 it++;
@@ -154,7 +154,7 @@ list<Token>::iterator transl_mnemonic(list<Token>::iterator it, char * s){
 		 case OP_JMPP     :
 			 if (nasmfile.is_open()){
 				 nasmfile << "cmp eax, 0" << endl;
-				 nasmfile << "ja" << endl;
+				 nasmfile << "ja ";
 				 it++;
 				 nasmfile << it->str << endl;
 		//		 it++;
@@ -167,7 +167,7 @@ list<Token>::iterator transl_mnemonic(list<Token>::iterator it, char * s){
 		 case OP_JMPZ     :
 			 if (nasmfile.is_open()){
 				 nasmfile << "cmp eax, 0" << endl;
-				 nasmfile << "je" << endl;
+				 nasmfile << "je ";
 				 it++;
 				 nasmfile << it->str << endl;
 	//			 it++;
@@ -219,6 +219,21 @@ list<Token>::iterator transl_mnemonic(list<Token>::iterator it, char * s){
 
 		 break;
 		 case OP_STORE    :
+			 if (nasmfile.is_open()){
+				 nasmfile << "mov ";
+				 it++;
+				 if (it->type == TT_CONST || it->str == "eax" || it->str == "ebx" || it->str == "ecx" || it->str == "edx" ) {
+					 nasmfile << it->str;
+				 }else{
+					 nasmfile << "[" << it->str << "]";
+				 }
+
+				 nasmfile << " , eax " << endl;
+				 //			 it++;
+			 }else{
+				 cout << "Falha na criação ou abertura do arquivo." << endl;
+				 exit(EXIT_FAILURE);
+			 }
 
 
 		 break;
