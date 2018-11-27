@@ -129,19 +129,20 @@ list<Token>::iterator transl_mnemonic(list<Token>::iterator it, char * s){
 
 		 case OP_DIV      :
 			 if (nasmfile.is_open()){
-				 nasmfile << "idiv ";
+				 nasmfile << "push edx" << endl << "idiv ";
                  it++;
                  if (it->type == TT_CONST) {
                      nasmfile << it->str << endl;
                  }else{
                      nasmfile << "DWORD[" << it->str << "]" << endl;
                  }
+				 nasmfile << "pop edx" << endl;
 			 }else{
 				 cout << "Falha na criação ou abertura do arquivo." << endl;
 				 exit(EXIT_FAILURE);
 			 }
 		 break;
-		 
+
 		 case OP_JMP      :
 			 if (nasmfile.is_open()){
 				 nasmfile << "jmp ";
